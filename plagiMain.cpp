@@ -9,6 +9,8 @@
 #include <sstream>
 #include <iomanip>
 
+using namespace std;
+
 char const * database = "database";
 char const * target_folder = "target";
 char const * stopwords_file = "stopwords.txt";
@@ -40,13 +42,14 @@ float cosine_score(std::vector<int> bvector, std::vector<int> tvector) {
                 sqrt(dot_product(tvector, tvector)) );
 }
 
-bool endswith (std::string const &fullString, std::string const &ending) {
+bool extCheck (string const &fileName, string const &extension) {
     // check the file extension ends with .txt
-    if (fullString.length() >= ending.length())
-        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
-    else 
+    if (fileName.length() >= extension.length())
+        return (0 == fileName.compare (fileName.length() - extension.length(), extension.length(), extension));
+    else
         return false;
 }
+
 // special attention
 void cleanString(std::string& str) {    
     size_t i = 0;
@@ -266,7 +269,7 @@ int main(int argc, char *argv[]) {
 
     if ((dir = opendir (target_folder)) != NULL) {
         while ((dir_object = readdir (dir)) != NULL)
-            if(endswith(std::string(dir_object->d_name), ".txt")){
+            if(extCheck((string)dir_object->d_name, ".txt")){
                 // target file name
                 printf ("\nPlagiarism scores for %s\n", dir_object->d_name);
                 // generate Path dynamically
