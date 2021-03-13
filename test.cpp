@@ -8,7 +8,7 @@
 #include <map>
 #include <sstream>
 #include <iomanip>
-
+#include "calculations.h"
 using namespace std;
 
 // Removes Comma and Characters from the given string it helps to compare
@@ -49,11 +49,11 @@ vector<string> stringToToken(string inpString) {
 
 
 int main(){
-
+    
     string test = "/home/ashley/work/spProject/SP Lab Project/target/ar.txt";
 	 //printf("%s\n",test);
-     cout<<test<<"\n";
-     auto rest = stringToToken(test);
+    //  cout<<test<<"\n";
+    //  auto rest = stringToToken(test);
 //     for(int i=rest.begin().;i!=rest.end();i++){
 
    // cout<<"After Cleaning The String\n";

@@ -8,6 +8,7 @@
 #include <map>
 #include <sstream>
 #include <iomanip>
+#include "calculations.h"
 
 using namespace std;
 
@@ -17,13 +18,6 @@ char const * stopwords_file = "stopwords.txt";
 
 int score_accuracy = 1;
 int number_of_tests = 3;
-
-float dot_product(vector<int> a, vector<int> b) {
-    float sum = 0 ;
-    for(int i=0; i<a.size(); i++)
-        sum += a[i] * b[i];
-    return sum;
-}
 
 float sum(vector<int> v) {
     float sumv = 0;
@@ -37,9 +31,10 @@ float get_multiplier(string word) {
 }
 
 float cosine_score(vector<int> bvector, vector<int> tvector) {
-    return dot_product(bvector, tvector) / 
-            (   sqrt(dot_product(bvector, bvector)) * 
-                sqrt(dot_product(tvector, tvector)) );
+    calculations c;
+    return c.dot_product(bvector, tvector) / 
+            (   sqrt(c.dot_product(bvector, bvector)) * 
+                sqrt(c.dot_product(tvector, tvector)) );
 }
 
 bool extCheck (string const &fileName, string const &extension) {
