@@ -46,10 +46,9 @@ bool extCheck (string const &fileName, string const &extension) {
     // check the file extension ends with .txt
     if (fileName.length() >= extension.length())
         return (0 == fileName.compare (fileName.length() - extension.length(), extension.length(), extension));
-    else
+    else 
         return false;
 }
-
 // special attention
 void cleanString(std::string& str) {    
     size_t i = 0;
@@ -281,7 +280,7 @@ int main(int argc, char *argv[]) {
 // database directory
                 if ((dirB = opendir (database)) != NULL) {
                     while ((dir_object = readdir (dirB)) != NULL)
-                        if(endswith(std::string(dir_object->d_name), ".txt")){
+                        if(extCheck((string)dir_object->d_name, ".txt")){
                            // path generate
                             base_file = database + std::string("/") + dir_object->d_name;
                             
