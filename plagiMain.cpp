@@ -19,16 +19,6 @@ char const * stopwords_file = "stopwords.txt";
 int score_accuracy = 1;
 int number_of_tests = 3;
 
-float sum(vector<int> v) {
-    float sumv = 0;
-    for (auto& n : v)
-        sumv += n;
-    return sumv;
-}
-
-float get_multiplier(string word) {
-    return word.length() * word.length();
-}
 
 float cosine_score(vector<int> bvector, vector<int> tvector) {
     calculations c;
@@ -74,19 +64,6 @@ string getFileData(string filePath) {
     return retString;
 }
 
-map<string, int> get_frequency(vector<string> tokens) {
- map<string, int> freqs;
-    for (auto const & x : tokens)
-        ++freqs[x];
-    vector<string> unique_tokens;
-    vector<int> freq_token;
-    for (auto const & p : freqs){
-        unique_tokens.push_back(p.first);
-        freq_token.push_back(p.second);
-    }
-
-    return freqs;
-}
 // we can minus to check
 // tokenization
 vector<string> stringToToken(string inpString) {
@@ -132,20 +109,20 @@ float tokenizeTest(vector<string> dbTokens, vector<string> tarTokens) {
     while (inFile >> stopword){
         tarTokens.erase(remove(tarTokens.begin(), tarTokens.end(), stopword), tarTokens.end());
     }
-    
-    auto tarFreqs = get_frequency(tarTokens);
-    auto dbFreqs = get_frequency(dbTokens);
+    calculations c1;
+    auto tarFreqs = c1.getFrequency(tarTokens);
+    auto dbFreqs = c1.getFrequency(dbTokens);
     
     int shared = 0;
     int total = 0;
-    
+    calculations c;
     for(auto const & word : tarFreqs) {
         auto search = dbFreqs .find(word.first);
         if(search != dbFreqs .end()){
-            shared += std::min(word.second, search->second) * get_multiplier(word.first);
-            total += word.second * get_multiplier(word.first);
+            shared += std::min(word.second, search->second) * c.get_multiplier(word.first);
+            total += word.second * c.get_multiplier(word.first);
         } else {
-            total += word.second * get_multiplier(word.first);
+            total += word.second * c.get_multiplier(word.first);
         }
     }
     float score = 10.0 * shared / total;
@@ -157,12 +134,13 @@ float ngramTest(vector<string> dbTokens,vector<string> tarTokens) {
    vector<int> tests {3, 5, 7};
    vector<int> weights {3, 5, 7};
    vector<float> ngresults;
+   calculations c;
 
     ngresults.push_back(ngram_score(dbTokens, tarTokens, 3));
     ngresults.push_back(ngram_score(dbTokens, tarTokens, 5));
     ngresults.push_back(ngram_score(dbTokens, tarTokens, 7));
 
-    float score = 10 * pow((ngresults[0]*weights[0] + ngresults[1]*weights[1] + ngresults[2]*weights[2])/sum(weights), 0.4);
+    float score = 10 * pow((ngresults[0]*weights[0] + ngresults[1]*weights[1] + ngresults[2]*weights[2])/c.sum(weights), 0.4);
     return score;
 }
 
@@ -180,9 +158,9 @@ float cosineTest(vector<string> dbTokens,vector<string> tarTokens) {
     all_tokens.insert( all_tokens.end(), dbTokens.begin(), dbTokens.end() );
     sort( all_tokens.begin(), all_tokens.end() );
     all_tokens.erase( unique( all_tokens.begin(), all_tokens.end() ), all_tokens.end() );
-
-    auto tarFreqs = get_frequency(tarTokens);
-    auto dbFreqs  = get_frequency(dbTokens);
+    calculations c2;
+    auto tarFreqs = c2.getFrequency(tarTokens);
+    auto dbFreqs  = c2.getFrequency(dbTokens);
 
     vector<int> dbVector;
     vector<int> tarVector;
@@ -209,6 +187,7 @@ float cosineTest(vector<string> dbTokens,vector<string> tarTokens) {
 }
 
 void get_verdict(vector<float> testScores, vector<string> matchingRes) {
+    calculations c;
     vector<int> weights (testScores.size(), 0);
     
     /**************************
@@ -221,7 +200,7 @@ void get_verdict(vector<float> testScores, vector<string> matchingRes) {
     weights[1] = 4;
     weights[2] = 3;
 
-    float final_score = (testScores[0]*weights[0] + testScores[1]*weights[1] + testScores[2]*weights[2])/sum(weights);
+    float final_score = (testScores[0]*weights[0] + testScores[1]*weights[1] + testScores[2]*weights[2])/c.sum(weights);
     string verdict;
 
     if(final_score < 1)

@@ -19,4 +19,28 @@ class calculations{
     return sum;
 }
 
+float sum(vector<int> v) {
+    float sumv = 0;
+    for (auto& n : v)
+        sumv += n;
+    return sumv;
+}
+
+float get_multiplier(string word) {
+    return word.length() * word.length();
+}
+
+map<string, int> getFrequency(vector<string> tokens) {
+ map<string, int> freqs;
+    for (auto const & x : tokens)
+        ++freqs[x];
+    vector<string> unique_tokens;
+    vector<int> freq_token;
+    for (auto const & p : freqs){
+        unique_tokens.push_back(p.first);
+        freq_token.push_back(p.second);
+    }
+
+    return freqs;
+}
 };
