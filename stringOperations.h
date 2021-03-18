@@ -12,10 +12,7 @@ class StringOperations{
     else 
         return false;
     }
-    // Removes Comma and Characters from the given string it helps to compare
-// Input String: My,Name;is,Ashley.txt
-// After Cleaning The String
-// Output String: MyNameisAshleytxt
+
 void stringCleansing(string &inpStr) {    
     int i = 0;
     int len = inpStr.length();
@@ -35,8 +32,6 @@ string getFileData(string filePath) {
     while (dFile >> temp){
         retString += string(" ") + temp;
     }
-// uncomment to unleash the power
-// cout<<retString<<"\n";
    stringCleansing(retString);
     return retString;
 }

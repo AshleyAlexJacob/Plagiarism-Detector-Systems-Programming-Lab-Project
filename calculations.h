@@ -30,10 +30,6 @@ map<string, int> getFrequency(vector<string> tokens) {
         ++freqs[x];
     vector<string> unique_tokens;
     vector<int> freq_token;
-    for (auto const & p : freqs){
-        unique_tokens.push_back(p.first);
-        freq_token.push_back(p.second);
-    }
 
     return freqs;
 }

@@ -1,7 +1,7 @@
 #include<iostream>
 #include<iterator>
 #include<vector>
-#include <sstream>
+#include<sstream>
 
 using namespace std;
 
